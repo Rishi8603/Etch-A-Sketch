@@ -162,3 +162,9 @@ footer {
 footer p {
   margin: 0;
 }
+footer a {
+  color: inherit;
+  /* inherit text color from parent */
+  text-decoration: underline;
+  transition: transform 0.2s ease;
+}

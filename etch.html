@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="a.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main>
+    <h1>Etch-A-Sketch</h1>
+    <div class="bdaContainer">
+      <div class="utility">
+        <div class="Paint">
+          <!-- Color Picker -->
+          <br>
+          <label for="colorPicker">Color: <input type="color" id="colorPicker" name="colorPicker">
+          </label>
+          <br>
+      
+          <!-- Radio buttons -->
+          <label for="custom">
+            <input type="radio" id="custom" name="mode" value="custom">Custom
+          </label><br>
+      
+          <label for="rainbow">
+            <input type="radio" id="rainbow" name="mode" value="rainbow" checked>Rainbow
+          </label><br>
+      
+          <label for="erase">
+            <input type="radio" id="erase" name="mode" value="erase">Erase
+          </label>
+          <button class="btn" id="exportBtn">Export</button>
+        </div>
+        
+        <div class="Canvas">
+          <label for="grd">
+            Grid: <input type="checkbox" id="grd" checked>
+          </label>
+          <label for="colorPicker1">
+            Grid Color: <input type="color" id="colorPicker1" name="colorPicker1">
+          </label>
+          <label for="bgColorPicker">
+            BckGrnd Color: <input type="color" id="bgColorPicker" name="bgColorPicker">
+          </label>
+          <button class="btn" id="btn1">Clear</button>
+          <input type="range" id="gridSlider" min="4" max="128" value="16">
+          <span id="gridSizeDisplay">16 * 16</span>  
+        </div>
+      </div>
+      <div id="container"></div>
+
+    </div>
+  </main>
+  <script src="sketch.js"></script>
+  <footer>
+    <p>Created with ♥ by <a href="https://github.com/Rishi8603" target="_blank">@Rishi</a> | The Odin Project</p>
+  </footer>
+</body>
+</html>

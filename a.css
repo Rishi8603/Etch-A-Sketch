@@ -1,0 +1,164 @@
+/* General Body and Font Styling */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  /* Use flexbox to push footer down */
+  flex-direction: column;
+  /* Stack children vertically */
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  color: #ECECEC;
+  /* Off-white text for the entire page */
+  background-color: #202123;
+  /* Set background on body for consistency */
+}
+
+/* Main container with the darkest background */
+main {
+  flex: 1 0 auto;
+  /* Allow main to grow and shrink, but not shrink smaller than content */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #202123;
+  /* Darkest charcoal background */
+}
+
+/* Header (H1) Styling */
+h1 {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  padding: 15px 0;
+  color: #6ebc15;
+  /* Using the teal/green accent for the title */
+  background-color: transparent;
+  /* Removing the old blue background */
+  border-bottom: 1px solid #565869;
+  /* Subtle line to separate header */
+}
+
+/* Container for Controls and Grid */
+.bdaContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  background-color: #343541;
+  /* Main content area background */
+}
+
+/* Main Controls Panel Wrapper */
+.utility {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 600px;
+  padding: 0;
+  /* No padding needed here now */
+  gap: 20px;
+  /* Removed border from the outer wrapper for a cleaner look */
+}
+
+/* Styling for the individual control boxes */
+.Paint,
+.Canvas {
+  flex: 1;
+  font-size: 18px;
+  /* Slightly adjusted font size */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: #40414F;
+  /* UI element background color */
+  border: 1px solid #565869;
+  /* Subtle border for definition */
+  border-radius: 6px;
+  /* Rounded corners for a modern feel */
+}
+
+.Paint,
+.Canvas {
+  align-items: center;
+}
+
+#exportBtn {
+  margin-top: 20px;
+}
+
+#gridSlider {
+  margin-top: 20px;
+  margin-bottom: -10px;
+}
+
+#btn1 {
+  margin-top: 25px;
+}
+
+label {
+  display: block;
+}
+
+/* Drawing Grid Container */
+#container {
+  width: 600px;
+  height: 600px;
+  display: grid;
+  background-color: white;
+  /* This will be changed by the color picker */
+  border: 2px solid #565869;
+  border-radius: 4px;
+  /* Matching the theme's border color */
+}
+
+.grid-cell {
+  /* The border and background are now controlled by JavaScript */
+}
+
+/* Button Styling */
+.btn {
+  padding: 8px 25px;
+  /* Slightly more padding */
+  border: none;
+  /* Removed border for a flatter look */
+  border-radius: 5px;
+  background-color: #6ebc15;
+  /* Using the teal/green accent color */
+  color: #ECECEC;
+  /* Light text on the button */
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Slider Styling */
+#gridSlider {
+  width: 80%;
+}
+
+/* NEW: Footer Styling */
+footer {
+  flex-shrink: 0;
+  /* Prevent footer from shrinking */
+  text-align: center;
+  padding: 20px 0;
+  background-color: #202123;
+  color: #a9a9a9;
+  border-top: 1px solid #565869;
+  font-size: 14px;
+  width: 100%;
+}
+
+footer p {
+  margin: 0;
+}

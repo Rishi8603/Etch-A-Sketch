@@ -52,6 +52,8 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 30px;
+  padding: 20px;
+  /* Add some padding for smaller screens */
   background-color: #343541;
   /* Main content area background */
 }
@@ -109,10 +111,18 @@ label {
   display: block;
 }
 
-/* Drawing Grid Container */
+/* Drawing Grid Container - NOW RESPONSIVE */
 #container {
   width: 600px;
+  /* Max-width on large screens */
   height: 600px;
+  /* Max-height on large screens */
+  max-width: 90vw;
+  /* Takes 90% of viewport width */
+  max-height: 90vw;
+  /* Takes 90% of viewport width */
+  aspect-ratio: 1 / 1;
+  /* Ensures it stays a square */
   display: grid;
   background-color: white;
   /* This will be changed by the color picker */
@@ -120,6 +130,7 @@ label {
   border-radius: 4px;
   /* Matching the theme's border color */
 }
+
 
 .grid-cell {
   /* The border and background are now controlled by JavaScript */
@@ -162,9 +173,40 @@ footer {
 footer p {
   margin: 0;
 }
+
 footer a {
   color: inherit;
   /* inherit text color from parent */
   text-decoration: underline;
   transition: transform 0.2s ease;
+}
+
+/* =========================== */
+/* 🔹 NEW: Media Query for Mobile 🔹 */
+/* =========================== */
+@media (max-width: 800px) {
+  .bdaContainer {
+    flex-direction: column;
+    /* Stack controls and grid vertically */
+    gap: 20px;
+  }
+
+  .utility {
+    flex-direction: row;
+    /* Place control boxes side-by-side */
+    width: 90%;
+    /* Take up most of the screen width */
+    height: auto;
+    gap: 10px;
+    margin: 0;
+    /* Reset margin */
+  }
+
+  .Paint,
+  .Canvas {
+    width: 50%;
+    /* Each control box takes half the width */
+    padding: 10px;
+    font-size: 16px;
+  }
 }

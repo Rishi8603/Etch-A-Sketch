@@ -119,23 +119,31 @@ gridToggle.addEventListener('change', (e) => {
 });
 
 // ===========================
-// 🔹 Advanced Drawing Logic
+// 🔹 Advanced Drawing Logic (NOW WITH TOUCH SUPPORT)
 // ===========================
 
 function getGridCoordsFromEvent(e) {
   const rect = dabba.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+
+  // Check if it's a touch event or a mouse event
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+
   const gridSize = parseInt(slider.value);
   const cellWidth = dabba.clientWidth / gridSize;
   const cellHeight = dabba.clientHeight / gridSize;
+
   const gridX = Math.floor(x / cellWidth);
   const gridY = Math.floor(y / cellHeight);
+
   return { gridX, gridY };
 }
 
 function handleDrawingStart(e) {
-  e.preventDefault();
+  e.preventDefault(); // Prevents default actions like text selection or scrolling
   isDrawing = true;
   const { gridX, gridY } = getGridCoordsFromEvent(e);
   drawBresenhamLine(gridX, gridY, gridX, gridY);
@@ -145,6 +153,7 @@ function handleDrawingStart(e) {
 
 function handleDrawingMove(e) {
   if (!isDrawing) return;
+  e.preventDefault(); // CRUCIAL: Prevents page from scrolling on mobile while drawing
   const { gridX, gridY } = getGridCoordsFromEvent(e);
   if (gridX !== lastX || gridY !== lastY) {
     drawBresenhamLine(lastX, lastY, gridX, gridY);
@@ -184,11 +193,20 @@ function drawBresenhamLine(x0, y0, x1, y1) {
   }
 }
 
-// Assign the drawing event listeners to the container and window
+// Assign MOUSE drawing event listeners
 dabba.addEventListener('mousedown', handleDrawingStart);
 dabba.addEventListener('mousemove', handleDrawingMove);
 window.addEventListener('mouseup', handleDrawingEnd);
+window.addEventListener('mouseleave', handleDrawingEnd); // Stop drawing if mouse leaves window
+
+// Assign TOUCH drawing event listeners
+dabba.addEventListener('touchstart', handleDrawingStart);
+dabba.addEventListener('touchmove', handleDrawingMove);
+window.addEventListener('touchend', handleDrawingEnd);
+
+// Prevent context menu on long-press (common on mobile)
 dabba.addEventListener('contextmenu', e => e.preventDefault());
+
 
 // ===========================
 // 🔹 Grid Creation & Update Functions

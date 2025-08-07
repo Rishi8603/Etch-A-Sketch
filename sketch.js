@@ -1,6 +1,3 @@
-// ===========================
-// 🔹 Utility Functions
-// ===========================
 function getRandomCol() {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
   return '#' + randomColor.padStart(6, '0');
@@ -11,13 +8,8 @@ function hexToRgb(hex) {
   return result ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})` : null;
 }
 
-/**
- * Changes the background color of a given cell based on the current drawing mode.
- * @param {HTMLElement} element The grid cell element to color.
- */
 function changecolor(element) {
-  if (!element) return; // Guard against null elements
-
+  if (!element) return;
   if (eraseMode) {
     element.style.backgroundColor = bgSelectedColor;
   } else if (rainbow) {
@@ -27,10 +19,6 @@ function changecolor(element) {
   }
 }
 
-/**
- * Resets the color of all grid cells to the background color.
- * @param {HTMLElement} container The grid container element.
- */
 function resetcol(container) {
   const cells = container.querySelectorAll(".grid-cell");
   cells.forEach(cell => {
@@ -38,40 +26,25 @@ function resetcol(container) {
   });
 }
 
-// ===========================
-// 🔹 Global Variables
-// ===========================
 let rainbow = true;
 let eraseMode = false;
 let selectedColor = "#000000";
-let selectedColor1 = "#000000"; // Grid color
+let selectedColor1 = "#000000";
 let bgSelectedColor = "#FFFFFF";
 let isDrawing = false;
-let gridLinesOn = true; // To track grid visibility
-
-// Store the last grid cell coordinates for line drawing
+let gridLinesOn = true;
 let lastX = -1;
 let lastY = -1;
 
-
-// DOM references
 const slider = document.getElementById("gridSlider");
 const display = document.getElementById("gridSizeDisplay");
 const dabba = document.querySelector("#container");
 dabba.style.display = "grid";
-
 const colorPicker = document.getElementById("colorPicker");
 const bgColorPicker = document.getElementById("bgColorPicker");
-
 const colorPicker1 = document.getElementById("colorPicker1");
 const gridToggle = document.getElementById("grd");
 
-
-// ===========================
-// 🔹 Event Listeners
-// ===========================
-
-// Handle mode changes
 document.querySelectorAll('input[name="mode"]').forEach((radio) => {
   radio.addEventListener("change", (e) => {
     const mode = e.target.value;
@@ -88,7 +61,6 @@ document.querySelectorAll('input[name="mode"]').forEach((radio) => {
   });
 });
 
-// Handle color picker updates
 colorPicker.addEventListener("input", (e) => {
   selectedColor = e.target.value;
 });
@@ -96,10 +68,8 @@ colorPicker.addEventListener("input", (e) => {
 bgColorPicker.addEventListener("input", (e) => {
   const newBgColor = e.target.value;
   const oldBgColorRgb = hexToRgb(bgSelectedColor);
-
   bgSelectedColor = newBgColor;
   dabba.style.backgroundColor = newBgColor;
-
   const cells = dabba.querySelectorAll('.grid-cell');
   cells.forEach(cell => {
     if (cell.style.backgroundColor === oldBgColorRgb) {
@@ -118,32 +88,22 @@ gridToggle.addEventListener('change', (e) => {
   updateGridLines();
 });
 
-// ===========================
-// 🔹 Advanced Drawing Logic (NOW WITH TOUCH SUPPORT)
-// ===========================
-
 function getGridCoordsFromEvent(e) {
   const rect = dabba.getBoundingClientRect();
-
-  // Check if it's a touch event or a mouse event
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
   const x = clientX - rect.left;
   const y = clientY - rect.top;
-
   const gridSize = parseInt(slider.value);
   const cellWidth = dabba.clientWidth / gridSize;
   const cellHeight = dabba.clientHeight / gridSize;
-
   const gridX = Math.floor(x / cellWidth);
   const gridY = Math.floor(y / cellHeight);
-
   return { gridX, gridY };
 }
 
 function handleDrawingStart(e) {
-  e.preventDefault(); // Prevents default actions like text selection or scrolling
+  e.preventDefault();
   isDrawing = true;
   const { gridX, gridY } = getGridCoordsFromEvent(e);
   drawBresenhamLine(gridX, gridY, gridX, gridY);
@@ -153,7 +113,7 @@ function handleDrawingStart(e) {
 
 function handleDrawingMove(e) {
   if (!isDrawing) return;
-  e.preventDefault(); // CRUCIAL: Prevents page from scrolling on mobile while drawing
+  e.preventDefault();
   const { gridX, gridY } = getGridCoordsFromEvent(e);
   if (gridX !== lastX || gridY !== lastY) {
     drawBresenhamLine(lastX, lastY, gridX, gridY);
@@ -193,24 +153,14 @@ function drawBresenhamLine(x0, y0, x1, y1) {
   }
 }
 
-// Assign MOUSE drawing event listeners
 dabba.addEventListener('mousedown', handleDrawingStart);
 dabba.addEventListener('mousemove', handleDrawingMove);
 window.addEventListener('mouseup', handleDrawingEnd);
-window.addEventListener('mouseleave', handleDrawingEnd); // Stop drawing if mouse leaves window
-
-// Assign TOUCH drawing event listeners
+window.addEventListener('mouseleave', handleDrawingEnd);
 dabba.addEventListener('touchstart', handleDrawingStart);
 dabba.addEventListener('touchmove', handleDrawingMove);
 window.addEventListener('touchend', handleDrawingEnd);
-
-// Prevent context menu on long-press (common on mobile)
 dabba.addEventListener('contextmenu', e => e.preventDefault());
-
-
-// ===========================
-// 🔹 Grid Creation & Update Functions
-// ===========================
 
 function updateGridLines() {
   const cells = dabba.querySelectorAll('.grid-cell');
@@ -234,44 +184,26 @@ function createGrid(size) {
   }
 }
 
-// ===========================
-// 🔹 Slider Control
-// ===========================
 slider.addEventListener("input", function () {
   let size = parseInt(slider.value);
   display.textContent = `${size} * ${size}`;
   createGrid(size);
 });
 
-// ===========================
-// 🔹 Button Actions & Export
-// ===========================
-
-/**
- * Exports the current grid drawing as a PNG image by drawing it to a temporary canvas.
- */
 function exportDrawing() {
   const gridSize = parseInt(slider.value);
   const gridContainer = dabba;
   const cells = gridContainer.children;
-
-  // Use the container's display size for the canvas to maintain aspect ratio.
   const canvasWidth = gridContainer.clientWidth;
   const canvasHeight = gridContainer.clientHeight;
-
   const exportCanvas = document.createElement('canvas');
   exportCanvas.width = canvasWidth;
   exportCanvas.height = canvasHeight;
   const ctx = exportCanvas.getContext('2d');
-
   const cellWidth = canvasWidth / gridSize;
   const cellHeight = canvasHeight / gridSize;
-
-  // 1. Fill the entire canvas with the background color.
   ctx.fillStyle = bgSelectedColor;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-  // 2. Draw each cell's color onto the canvas.
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i];
     const x = (i % gridSize) * cellWidth;
@@ -279,8 +211,6 @@ function exportDrawing() {
     ctx.fillStyle = cell.style.backgroundColor;
     ctx.fillRect(x, y, cellWidth, cellHeight);
   }
-
-  // 3. If grid lines are enabled, draw them on top for a complete look.
   if (gridLinesOn) {
     ctx.strokeStyle = selectedColor1;
     ctx.lineWidth = 1;
@@ -290,33 +220,24 @@ function exportDrawing() {
       ctx.strokeRect(x, y, cellWidth, cellHeight);
     }
   }
-
-  // 4. Create a temporary link to trigger the download.
   const link = document.createElement('a');
   link.download = 'etch-a-sketch.png';
   link.href = exportCanvas.toDataURL('image/png');
-  document.body.appendChild(link); // Required for some browsers like Firefox.
+  document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link); // Clean up the temporary link.
+  document.body.removeChild(link);
 }
 
-// Clear button action
 document.getElementById("btn1").addEventListener("click", function () {
   resetcol(dabba);
-
   this.style.backgroundColor = "rgba(255, 128, 0, 0.61)";
   setTimeout(() => {
     this.style.backgroundColor = "";
   }, 100);
 });
 
-// Export button action
 document.getElementById("exportBtn").addEventListener("click", exportDrawing);
 
-
-// ===========================
-// 🔹 Initial Setup
-// ===========================
 gridToggle.checked = gridLinesOn;
 selectedColor = colorPicker.value;
 selectedColor1 = colorPicker1.value;
